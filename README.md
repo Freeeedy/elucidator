@@ -45,7 +45,7 @@ chmod +x tool.py
 
 Run the script:
 
-```python3 tool.py```
+```python3 elucidator.py```
 
 
 You will be prompted for:
