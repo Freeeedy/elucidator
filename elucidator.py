@@ -1,32 +1,107 @@
 import subprocess
 import os
-import platform
-import argparse
 
-os_name = platform.system()
-parser = argparse.ArgumentParser(description='')
+ASCII = r"""
+___________.__                .__    .___       __                
+\_   _____/|  |  __ __   ____ |__| __| _/____ _/  |_  ___________ 
+ |    __)_ |  | |  |  \_/ ___\|  |/ __ |\__  \\   __\/  _ \_  __ \
+ |        \|  |_|  |  /\  \___|  / /_/ | / __ \|  | (  <_> )  | \/
+/_______  /|____/____/  \___  >__\____ |(____  /__|  \____/|__|   
+        \/                    \/        \/     \/                  
+"""
 
-parser.add_argument('-t', type=str, required=True, help='what to scan')
-parser.add_argument('-Nm', action='store_true', help='use nmap?')
-parser.add_argument('-Na', action='store_true', help='use naabu?')
-parser.add_argument('-Rs', action='store_true', help='use rustscan?')
-parser.add_argument('-Gb', action='store_true', help='use gobuster?')
-parser.add_argument('-Fb', action='store_true', help='use feroxbuster?')
-parser.add_argument('-w', type=str, required=False, help='specify the wordlist path')
+TOOLS = {
+    "nmap":      "nmap -sV {target}",
+    "rustscan":  "rustscan -a {target} --ulimit 5000 --no-banner",
+    "whatweb":   "whatweb {target} --color=never",
+    "subfinder": "subfinder -d {target} -silent",
+    "nikto":     "nikto -h {target}",
+    "smbmap":    "smbmap -H {target}",
+    "nuclei":    "nuclei -u {target} -silent",
+    "gobuster":  "gobuster dir -u {target} -w {wordlist} -q",
+    "waybackurls": "waybackurls {target}"}
 
-args = parser.parse_args()
 
-if os_name == "Linux":
-    if args.Nm == True:
-        subprocess.Popen(f'nmap -sV {args.t} > nmap.log 2>&1', shell=True)
-    if args.Na == True:
-        subprocess.Popen(f'naabu -host {args.t} -timeout 500 -silent > naabu.log 2>&1', shell=True)
-    if args.Rs == True:
-        subprocess.Popen(f'rustscan -a {args.t} --no-banner --ulimit 5000 > rust.log 2>&1', shell=True)
-    if args.Gb == True:
-        subprocess.run(f'gobuster dir -u {args.t} -w {args.w} > gobuster.log 2>&1', shell=True)
-    if args.Fb == True:
-        subprocess.run(f'feroxbuster -u {args.t} -w {args.w} > feroxbuster.log 2>&1', shell=True)
+def ask_target():
+    return input("Target (IP/domain): ").strip()
 
-elif os_name == "Windows":
-    print('dont use that shit brother, windows sucks massive black dicks')
+
+def ask_tools():
+    print("\nSelect tools (comma-separated):")
+    print(" 1) Nmap")
+    print(" 2) RustScan")
+    print(" 3) WhatWeb")
+    print(" 4) Subfinder")
+    print(" 5) Nikto")
+    print(" 6) SMBMap")
+    print(" 7) Nuclei")
+    print(" 8) Gobuster")
+    print(" 9) WayBackURLs")
+    print(" 0) select all\n")
+
+    choices = input("Your choice: ").replace(" ", "").split(",")
+    selected = []
+
+    for c in choices:
+        if c == "1": selected.append("nmap")
+        elif c == "2": selected.append("rustscan")
+        elif c == "3": selected.append("whatweb")
+        elif c == "4": selected.append("subfinder")
+        elif c == "5": selected.append("nikto")
+        elif c == "6": selected.append("smbmap")
+        elif c == "7": selected.append("nuclei")
+        elif c == "8": selected.append("gobuster")
+        elif c == "9": selected.append("waybackurls")
+        elif c == "0": selected.extend(["nmap", "rustscan", "whatweb", "subfinder", "nikto", "smbmap", "nuclei", "gobuster", "waybackurls"])
+
+    return selected
+
+
+def ask_wordlist(selected):
+    if "gobuster" in selected:
+        return input("Wordlist path: ").strip()
+    return None
+
+
+def run_tools_parallel(target, selected, wordlist):
+    os.makedirs("logs", exist_ok=True)
+
+    processes = []
+
+    # Default wordlist
+    if wordlist == "":
+        wordlist = "wordlists/directory-list-2.3-medium.txt"
+
+    for tool in selected:
+        cmd = TOOLS[tool].format(target=target, wordlist=wordlist)
+        logfile = f"logs/{tool}.log"
+
+        print(f"[+] Starting {tool} in background: {cmd}")
+
+        f = open(logfile, "w")
+        p = subprocess.Popen(cmd, shell=True, stdout=f, stderr=f)
+        processes.append((tool, p, f))
+
+    print("\n[+] All selected tools are running in parallel...\n")
+
+    for tool, proc, f in processes:
+        proc.wait()
+        f.close()
+        print(f"[✓] {tool} finished → logs/{tool}.log")
+
+
+def main():
+    print(ASCII)
+    print("Use only on systems you are authorized to test.\n")
+
+    target = ask_target()
+    selected = ask_tools()
+    wordlist = ask_wordlist(selected)
+
+    run_tools_parallel(target, selected, wordlist)
+
+    print("\nAll tasks complete. Check the logs/ folder!")
+
+
+if __name__ == "__main__":
+    main()
