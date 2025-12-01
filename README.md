@@ -36,8 +36,8 @@ Custom wordlist support for Gobuster
 Clone the repository and make the script executable:
 
 ```
-git clone <your-repo>
-cd <your-repo>
+git clone https://github.com/Freeeedy/elucidator
+cd elucidator
 chmod +x tool.py
 ```
 
