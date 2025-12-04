@@ -36,11 +36,52 @@ sudo mv ~/go/bin/waybackurls /usr/local/bin/ 2>/dev/null
 echo "[+] Installing Gobuster..."
 sudo apt install -y gobuster
 
-
 echo "[+] Installing Nikto..."
 sudo apt install -y nikto
 
 echo "[+] Installing SMBMap..."
 sudo apt install -y smbmap
+
+echo "[+] Installing ftp enum tools..."
+sudo apt install -y ftp
+
+echo "[+] Installing ssh-audit..."
+sudo pip3 install ssh-audit
+
+echo "[+] Installing smtp-user-enum..."
+sudo apt install -y smtp-user-enum
+
+echo "[+] Installing dnsenum..."
+sudo apt install -y dnsenum
+
+echo "[+] Installing showmount (NFS utils)..."
+sudo apt install -y nfs-common
+
+echo "[+] Installing windapsearch..."
+sudo git clone https://github.com/ropnop/windapsearch /opt/windapsearch
+sudo ln -s /opt/windapsearch/windapsearch.py /usr/local/bin/windapsearch 2>/dev/null
+
+echo "[+] Installing rsync..."
+sudo apt install -y rsync
+
+echo "[+] Installing Impacket..."
+sudo apt install -y python3-impacket
+
+echo "[+] Installing RDP Security Check..."
+sudo git clone https://github.com/robertdavidgraham/rdp-sec-check /opt/rdp-sec-check
+sudo make -C /opt/rdp-sec-check
+sudo ln -s /opt/rdp-sec-check/rdp-sec-check /usr/local/bin/rdp-sec-check 2>/dev/null
+
+echo "[+] Installing Evil-WinRM..."
+sudo gem install evil-winrm
+
+echo "[+] Installing Redis CLI..."
+sudo apt install -y redis-tools
+
+echo "[+] Installing memcached-tool..."
+sudo apt install -y memcached
+
+echo "[+] Installing MongoDB client..."
+sudo apt install -y mongodb-clients
 
 echo "[✓] All tools installed successfully!"
