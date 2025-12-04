@@ -27,33 +27,35 @@ Supports major enumeration tools:
 - gobuster
 - waybackurls
 
-Interactive menu to select tools
-
-Custom wordlist support for Gobuster
-
 ### Installation
 
 Clone the repository and make the script executable:
 
 ```
-git clone https://github.com/Freeeedy/elucidator
-cd elucidator
+git clone <your-repo>
+cd <your-repo>
 chmod +x tool.py
+```
+
+Install necessary tools:
+```
+./install.sh
 ```
 
 ### Usage
 
 Run the script:
-
-```python3 elucidator.py```
-
+```
+python3 tool.py
+```
 
 You will be prompted for:
 
-1. Target
-```Target (IP/domain):```
-
-2. Tools to run
+##### 1. Target
+```
+Target (IP/domain):
+```
+##### 2. Tools to run
 
 ```
 Select one or more tools:
@@ -74,10 +76,10 @@ Example:
 ```
 Your choice: 1,4,7
 ```
-3. Wordlist (only if Gobuster is selected)
+##### 3. Wordlist (only if Gobuster is selected)
+```
 Wordlist path:
-
-
+```
 If empty, it defaults to:
 ```
 wordlists/directory-list-2.3-medium.txt
@@ -95,3 +97,7 @@ logs/
 ```
 
 Each tool runs in the background and the script waits for all jobs to finish.
+
+**Note:**
+
+Elu 1.0 was fully coded by me. Starting from Elu 2.0, I expanded the project with additional features and improvements. The majority of the code is still written by me, with supplemental assistance and ideas provided through Vibe Coding.
