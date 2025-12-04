@@ -27,6 +27,11 @@ Supports major enumeration tools:
 - gobuster
 - waybackurls
 
+- Deep port scan 
+        - Combines Nmap + RustScan open port results
+        - Automatically runs port-specific enumeration modules
+        - Outputs saved into logs/deep/ and logs/ports/
+
 ### Installation
 
 Clone the repository and make the script executable:
@@ -69,6 +74,7 @@ Select one or more tools:
 7) Nuclei
 8) Gobuster
 9) WayBackURLs
+10) Deep port scan
 0) Select all
 ```
 
@@ -97,6 +103,47 @@ logs/
 ```
 
 Each tool runs in the background and the script waits for all jobs to finish.
+
+### Deep Port Scan
+
+The new Deep Port Scan mode performs a multi-stage, automated port-specific enumeration:
+
+##### Step 1 — Dual open-port detection
+
+Runs both:
+- nmap
+- rustscan
+
+Open ports are extracted and merged into:
+```
+logs/deep/open_ports.txt
+```
+##### Step 2 — Port-specific modules
+
+Each detected port is checked against a module list:
+```
+PORT_MODULES = {
+ 21: ftp_enum
+ 22: ssh-audit
+ 23: telnet-encryption script
+ 25: smtp-user-enum
+ 53: dnsenum
+ ...
+ 27017: mongo stats
+}
+```
+If a module exists for that port, it is automatically executed:
+```
+logs/ports/<port>.log
+```
+Example output:
+```
+[+] Port 445 matched → running: smbmap -H <target>
+[✓] Output saved to logs/ports/445.log
+[-] No module for port 5353
+```
+
+This allows ultra-fast recon → enumeration chaining with no manual steps.
 
 **Note:**
 
