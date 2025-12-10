@@ -181,4 +181,4 @@ This allows ultra-fast recon → enumeration chaining with no manual steps.
 
 **Note:**
 
-Elu 1.0 was fully coded by me. Starting from Elu 2.0, I expanded the project with additional features and improvements. The majority of the code is still written by me, with supplemental assistance and ideas provided through Vibe Coding.
+Elu 0.1 was fully coded by me. Starting from Elu 1.0, I expanded the project with additional features and improvements. The majority of the code is still written by me, with supplemental assistance and ideas provided through Vibe Coding.
