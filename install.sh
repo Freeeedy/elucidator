@@ -4,6 +4,9 @@ echo "[+] Updating system..."
 sudo apt update -y
 sudo apt install -y git curl wget python3 python3-pip cargo build-essential
 
+echo "[+] Installing Argparse"
+sudo pip install argparse
+
 echo "[+] Installing Nmap..."
 sudo apt install -y nmap
 

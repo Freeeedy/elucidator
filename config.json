@@ -1,0 +1,13 @@
+{
+  "tools": {
+    "nmap": "nmap -sV {target}",
+    "rustscan": "rustscan -a {target} --ulimit 5000 --no-banner",
+    "whatweb": "whatweb {target} --color=never",
+    "subfinder": "subfinder -d {target} -silent",
+    "nikto": "nikto -h {target}",
+    "smbmap": "smbmap -H {target}",
+    "nuclei": "nuclei -u {target} -silent",
+    "gobuster": "gobuster dir -u {target} -w {wordlist} -q",
+    "waybackurls": "waybackurls {target}"
+  }
+}

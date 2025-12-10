@@ -32,6 +32,40 @@ Supports major enumeration tools:
         - Automatically runs port-specific enumeration modules
         - Outputs saved into logs/deep/ and logs/ports/
 
+### Configurable Commands (config.json)
+
+All tool commands are now stored in a central config file:
+`config.json`
+```
+{
+    "tools": {
+        "nmap": "nmap -sV {target}",
+        "rustscan": "rustscan -a {target}",
+        "whatweb": "whatweb {target}",
+        "subfinder": "subfinder -d {target} -o subs.txt",
+        "nikto": "nikto -host {target}",
+        "smbmap": "smbmap -H {target}",
+        "nuclei": "nuclei -u {target}",
+        "gobuster": "gobuster dir -u http://{target} -w {wordlist}",
+        "waybackurls": "echo {target} | waybackurls"
+    }
+}
+
+```
+You can freely modify these to change tool arguments, for example:
+- switch `nmap -sV` → `nmap -A`
+- use custom nuclei templates
+- change rustscan ports
+- add your own tools
+
+No code changes required.
+
+To use a custom config:
+```
+python3 elucidator.py --config myconfig.json
+```
+
+
 ### Installation
 
 Clone the repository and make the script executable:
@@ -147,4 +181,4 @@ This allows ultra-fast recon → enumeration chaining with no manual steps.
 
 **Note:**
 
-Elu 0.1 was fully coded by me. Starting from Elu 1.0, I expanded the project with additional features and improvements. The majority of the code is still written by me, with supplemental assistance and ideas provided through Vibe Coding.
+Elu 1.0 was fully coded by me. Starting from Elu 2.0, I expanded the project with additional features and improvements. The majority of the code is still written by me, with supplemental assistance and ideas provided through Vibe Coding.
